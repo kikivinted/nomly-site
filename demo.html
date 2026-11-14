@@ -1,0 +1,532 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Créez l’aperçu de votre site en 1 minute — Nomly</title>
+<meta name="description" content="Artisan ? Répondez à 5 questions et voyez à quoi pourrait ressembler le site de votre entreprise. Gratuit, sans inscription.">
+<meta name="theme-color" content="#1F4D3F">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath d='M4 36V20a16 16 0 0 1 32 0v16Z' fill='%23EC6A33'/%3E%3Ccircle cx='20' cy='22' r='6' fill='%23FFE6A3'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,700&family=Fraunces:opsz,wght@9..144,600;9..144,800&family=Manrope:wght@500;700;800&family=Cormorant+Garamond:wght@600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:#F7F1E3;color:#2E1A14;font-family:'DM Sans',system-ui,sans-serif}
+.d{font-family:'Bagel Fat One',system-ui,sans-serif;font-weight:400}
+a{color:#2E1A14}
+button{font:inherit;cursor:pointer;color:inherit}
+:focus-visible{outline:3px solid #2E1A14;outline-offset:3px;border-radius:10px}
+.skip{position:absolute;left:-999px;top:8px;background:#2E1A14;color:#FFE6A3;padding:10px 16px;border-radius:999px;z-index:10}
+.skip:focus{left:8px}
+
+/* header */
+.top{padding:16px clamp(16px,3vw,40px);display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.back{font-weight:700;text-decoration:none;background:#2E1A14;color:#FFE6A3;padding:12px 20px;border-radius:999px}
+
+/* layout */
+.wrap{max-width:1440px;margin:0 auto;padding:0 clamp(12px,2vw,24px) 40px;display:flex;flex-wrap:wrap;gap:20px;align-items:flex-start}
+.quiz{flex:1 1 400px;min-width:0;background:#1F4D3F;color:#F7F1E3;border-radius:36px;padding:clamp(24px,3vw,40px);position:sticky;top:12px}
+.stage{flex:1.6 1 560px;min-width:0}
+@media (max-width:1000px){.quiz{position:static}}
+
+/* quiz */
+.intro h1{margin:0 0 8px;font-size:clamp(2.2rem,3.6vw,3.4rem);line-height:.95;color:#FFE6A3}
+.intro p{margin:0 0 22px;color:#E8E1CF;font-size:17px;line-height:1.5}
+.progress{display:flex;gap:6px;margin-bottom:22px}
+.progress span{flex:1;height:8px;border-radius:999px;background:#2F6655}
+.progress span.on{background:#EC6A33}
+.step{display:none}
+.step.on{display:block}
+.q{margin:0 0 6px;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#FFE6A3}
+.step h2{margin:0 0 18px;font-size:clamp(1.6rem,2.4vw,2.1rem);line-height:1.05}
+.opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.opt{background:#F7F1E3;color:#2E1A14;border:3px solid transparent;border-radius:20px;padding:14px;text-align:left;display:flex;flex-direction:column;gap:6px;min-height:76px;font-weight:700;font-size:16px}
+.opt small{font-weight:500;font-size:13px;opacity:.8}
+.opt[aria-pressed="true"]{border-color:#EC6A33;background:#FFE6A3}
+.sw{display:flex;gap:4px}
+.sw i{width:22px;height:22px;border-radius:50%;display:block;border:1.5px solid rgba(0,0,0,.15)}
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+.field label{font-weight:700;font-size:15px}
+.field input,.field textarea{font:inherit;font-size:17px;border:3px solid #F7F1E3;background:#F7F1E3;color:#2E1A14;border-radius:16px;padding:13px 16px;min-height:52px}
+.field input:focus,.field textarea:focus{outline:none;border-color:#EC6A33}
+.hint{font-size:13px;color:#E8E1CF;margin:-4px 0 12px}
+.nav{display:flex;justify-content:space-between;gap:10px;margin-top:22px;flex-wrap:wrap}
+.btn{border:0;border-radius:999px;padding:15px 26px;font-weight:700;font-size:16px;min-height:50px;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}
+.btn-main{background:#EC6A33;color:#2E1A14}
+.btn-ghost{background:transparent;color:#F7F1E3;border:2px solid #F7F1E3}
+.btn[disabled]{opacity:.4;cursor:not-allowed}
+.colors{display:flex;flex-wrap:wrap;gap:8px}
+.colors button{width:40px;height:40px;border-radius:50%;border:3px solid #F7F1E3;padding:0}
+.colors button[aria-pressed="true"]{outline:3px solid #EC6A33;outline-offset:2px}
+.colors .reset{width:auto;border-radius:999px;padding:0 14px;background:#F7F1E3;color:#2E1A14;font-weight:700;font-size:13px;border:0}
+.upload{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.upload label.up{background:#F7F1E3;color:#2E1A14;border-radius:999px;padding:12px 18px;font-weight:700;font-size:15px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;min-height:46px}
+.upload input{position:absolute;width:1px;height:1px;opacity:0}
+.upload input:focus-visible + label.up{outline:3px solid #FFE6A3;outline-offset:3px}
+.upload .thumb{width:46px;height:46px;border-radius:12px;object-fit:cover;background:#F7F1E3;display:none}
+.upload .rm{background:none;border:0;color:#FFE6A3;text-decoration:underline;font-size:14px;display:none}
+.lab{font-weight:700;font-size:15px}
+.mini{display:flex;gap:5px;height:50px;border-radius:10px;padding:7px;align-items:stretch;margin-bottom:4px;border:1px solid rgba(0,0,0,.08)}
+.mini b,.mini i,.mini u{display:block;text-decoration:none}
+.mini .ln{display:flex;flex-direction:column;gap:4px;flex:1;justify-content:center}
+.mini .ln b{height:5px;border-radius:3px}
+.mini .ln b:first-child{width:80%;height:8px}
+.mini .ln b:last-child{width:55%}
+.small-note{font-size:13px;color:#E8E1CF;margin:8px 0 0}
+.opt{transition:transform .2s cubic-bezier(.3,1.6,.6,1),box-shadow .2s ease,border-color .2s ease,background-color .2s ease}
+.opt:hover{transform:translateY(-2px)}
+.opt:active{transform:translateY(1px) scale(.98)}
+.btn,.back,.upload label.up,.toggle button,.colors button{transition:transform .18s cubic-bezier(.3,1.6,.6,1),box-shadow .18s ease}
+.btn:not([disabled]):hover,.back:hover,.upload label.up:hover{transform:translateY(-1px);filter:brightness(1.06)}
+.btn:not([disabled]):active,.back:active{transform:scale(.99)}
+.colors button:hover{transform:scale(1.15)}
+.step.on{animation:stepIn .35s ease}
+@keyframes stepIn{from{opacity:0;transform:translateX(14px)}to{opacity:1;transform:none}}
+.progress span{transition:background-color .3s ease}
+@media (prefers-reduced-motion:reduce){.opt,.btn,.back,.colors button{transition:none}.opt:hover,.btn:hover,.back:hover{transform:none}.step.on{animation:none}.site{animation:none}}
+.result{background:#F7F1E3;color:#2E1A14;border-radius:24px;padding:20px;display:flex;flex-direction:column;gap:10px}
+.result .price{font-size:clamp(2.4rem,4vw,3.4rem);line-height:.9}
+.result ul{margin:0;padding-left:18px;line-height:1.6}
+
+/* stage */
+.bar{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px;margin-bottom:12px}
+.bar p{margin:0;font-weight:700}
+.toggle{display:inline-flex;background:#FFFBF0;border:2px solid #2E1A14;border-radius:999px;padding:4px;gap:4px}
+.toggle button{border:0;background:transparent;border-radius:999px;padding:9px 16px;font-weight:700;font-size:14px;min-height:40px}
+.toggle button[aria-pressed="true"]{background:#2E1A14;color:#FFE6A3}
+.browser{background:#FFFBF0;border:2px solid #2E1A14;border-radius:24px;overflow:hidden;margin:0 auto;transition:max-width .35s ease}
+.browser.mobile{max-width:400px}
+.chrome{display:flex;align-items:center;gap:8px;padding:10px 14px;border-bottom:2px solid #2E1A14;background:#F7F1E3}
+.chrome i{width:11px;height:11px;border-radius:50%;display:block}
+.url{flex:1;background:#FFFBF0;border-radius:999px;padding:6px 14px;font-size:13px;font-weight:500;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.viewport{height:min(78vh,820px);overflow:auto;container-type:inline-size;position:relative}
+.ribbon{position:sticky;bottom:12px;margin:0 auto;width:max-content;max-width:90%;background:#2E1A14;color:#FFE6A3;font-size:12px;font-weight:700;padding:8px 14px;border-radius:999px;z-index:5;text-align:center}
+
+/* ===== generated site ===== */
+.site{--bg:#FBF5EA;--ink:#3B2418;--accent:#D9692E;--soft:#F3D9A4;--soft2:#EFE3CD;--onaccent:#FFFFFF;--fd:'Fraunces',serif;--fb:'Manrope',sans-serif;--r:18px;
+  background:var(--bg);color:var(--ink);font-family:var(--fb);min-height:100%}
+.site h1,.site h2,.site h3,.site .brand{font-family:var(--fd);margin:0;font-weight:800}
+.site p{margin:0}
+.s-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:18px 6%;flex-wrap:wrap}
+.brand{font-size:22px;display:flex;align-items:center;gap:10px}
+.brand svg{flex-shrink:0}
+.s-menu{display:flex;gap:20px;font-size:14px;font-weight:700;flex-wrap:wrap}
+.s-btn{background:var(--accent);color:var(--onaccent);font-weight:800;font-size:15px;padding:13px 20px;border-radius:var(--r);display:inline-block}
+.s-btn.alt{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 2px var(--ink)}
+.s-ctas{display:flex;flex-wrap:wrap;gap:10px}
+.s-eyebrow{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;opacity:.75}
+.s-hero{display:flex;flex-wrap:wrap;gap:32px;align-items:center;padding:32px 6% 56px}
+.s-hero-txt{flex:1 1 300px;display:flex;flex-direction:column;gap:18px}
+.s-hero h1{font-size:clamp(2.2rem,6.4cqi,4rem);line-height:1}
+.s-hero-txt>p{font-size:16px;line-height:1.6;max-width:460px;opacity:.85}
+.s-img{flex:1 1 280px;min-height:300px;background:var(--soft);position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center}
+.s-img svg.ill{width:46%;max-width:180px;height:auto;position:relative;z-index:1}
+.s-img .ph{position:absolute;left:14px;bottom:12px;font-size:11px;font-weight:700;opacity:.65;z-index:1}
+.s-badge{position:absolute;z-index:2;background:var(--bg);color:var(--ink);font-size:13px;font-weight:800;padding:10px 14px;box-shadow:0 12px 30px rgba(0,0,0,.12)}
+.s-sec{padding:56px 6%}
+.s-sec-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:26px}
+.s-sec h2{font-size:clamp(1.7rem,4.6cqi,2.6rem);line-height:1.05}
+.s-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px}
+.s-card{display:flex;flex-direction:column;gap:10px;padding:20px}
+.s-card strong{font-size:17px;font-family:var(--fd)}
+.s-card span{font-size:14px;opacity:.8;line-height:1.5}
+.s-gal{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px}
+.s-gal div{aspect-ratio:4/5;background:var(--soft);display:flex;align-items:flex-end;padding:12px;font-size:13px;font-weight:800;position:relative;overflow:hidden}
+.s-gal div:nth-child(2){background:var(--accent);color:var(--onaccent)}
+.s-gal div:nth-child(3){background:var(--soft2)}
+.s-slots{display:flex;flex-wrap:wrap;gap:10px}
+.s-slots span{padding:12px 16px;font-weight:800;font-size:14px;box-shadow:inset 0 0 0 2px var(--ink)}
+.s-slots span.on{background:var(--accent);color:var(--onaccent);box-shadow:none}
+.s-info{display:flex;flex-wrap:wrap;gap:16px}
+.s-hours{flex:1 1 240px;padding:20px}
+.s-hours div{display:flex;justify-content:space-between;gap:10px;padding:9px 0;border-bottom:1px solid color-mix(in srgb,var(--ink) 18%,transparent);font-size:14px}
+.s-map{flex:1 1 240px;min-height:210px;background:var(--soft);position:relative;overflow:hidden;background-image:linear-gradient(color-mix(in srgb,var(--ink) 9%,transparent) 1px,transparent 1px),linear-gradient(90deg,color-mix(in srgb,var(--ink) 9%,transparent) 1px,transparent 1px);background-size:28px 28px}
+.s-map b{position:absolute;left:50%;top:45%;width:30px;height:30px;border-radius:50% 50% 50% 0;transform:translate(-50%,-50%) rotate(-45deg);background:var(--accent)}
+.s-map span{position:absolute;left:12px;bottom:12px;background:var(--bg);font-size:13px;font-weight:800;padding:6px 10px}
+.s-reviews{display:flex;flex-wrap:wrap;gap:12px;align-items:center;font-size:14px;font-weight:700}
+.s-stars{letter-spacing:2px;color:var(--accent);font-size:18px}
+.s-cta{margin:0 6% 48px;background:var(--ink);color:var(--bg);padding:36px;display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:18px}
+.s-cta h2{color:var(--bg);font-size:clamp(1.5rem,4.2cqi,2.4rem)}
+.s-foot{padding:22px 6% 72px;font-size:13px;opacity:.75;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;border-top:1px solid color-mix(in srgb,var(--ink) 15%,transparent)}
+
+.site{animation:fadeIn .35s ease}
+@keyframes fadeIn{from{opacity:.4}to{opacity:1}}
+.f-a{fill:var(--accent)}.f-s{fill:var(--soft)}.f-s2{fill:var(--soft2)}.f-i{fill:var(--ink)}.f-b{fill:var(--bg)}.st-i{stroke:var(--ink)}.st-a{stroke:var(--accent)}.st-b{stroke:var(--bg)}
+.s-img svg.scene{width:100%;height:100%;position:absolute;inset:0}
+.s-img img.photo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.brand img{height:32px;width:auto;max-width:120px;object-fit:contain}
+.burger{display:none;width:40px;height:40px;border-radius:10px;box-shadow:inset 0 0 0 2px var(--ink);align-items:center;justify-content:center}
+.s-gal div svg{position:absolute;right:10px;top:10px;width:34%;height:auto;opacity:.9}
+.s-why{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}
+.s-why div{display:flex;flex-direction:column;gap:2px;padding:16px 0;border-top:2px solid var(--ink);font-size:14px}
+.s-why strong{font-family:var(--fd);font-size:22px}
+.s-contact{display:flex;flex-wrap:wrap;gap:20px}
+.s-coord{flex:1 1 220px;display:flex;flex-direction:column;gap:12px;font-size:15px}
+.s-coord span{display:flex;gap:10px;align-items:center}
+.s-coord i{width:34px;height:34px;border-radius:50%;background:var(--soft);display:inline-block;flex-shrink:0}
+.s-form{flex:1.4 1 280px;display:flex;flex-direction:column;gap:10px}
+.s-form div{min-height:44px;border-radius:calc(var(--r) * .6);box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--ink) 25%,transparent);padding:12px 14px;font-size:14px;opacity:.7}
+.s-form div.big{min-height:84px}
+.st-moderne .s-why,.st-moderne .s-whysec{display:none}
+/* --- Chaleureux : arches, cartes douces, serif généreux --- */
+.st-chaleureux .s-img{border-radius:999px 999px 24px 24px;min-height:360px}
+.st-chaleureux .s-badge{left:14px;top:auto;bottom:18px;border-radius:999px;padding:10px 16px}
+.st-chaleureux .s-btn{border-radius:999px}
+.st-chaleureux .s-tag{align-self:flex-start;background:var(--soft);font-size:13px;font-weight:800;padding:7px 14px;border-radius:999px}
+.st-chaleureux .s-alt{background:var(--soft2);border-radius:40px;margin:0 3%}
+.st-chaleureux .s-card{background:var(--bg);border-radius:24px}
+.st-chaleureux .s-card i{width:44px;height:44px;border-radius:50%;background:var(--soft);display:flex;align-items:center;justify-content:center;font-style:normal;font-weight:800;color:var(--accent)}
+.st-chaleureux .s-gal div{border-radius:200px 200px 20px 20px}
+.st-chaleureux .s-slots span,.st-chaleureux .s-map,.st-chaleureux .s-hours,.st-chaleureux .s-map span{border-radius:20px}
+.st-chaleureux .s-hours{background:var(--soft2)}
+.st-chaleureux .s-cta{border-radius:36px}
+
+/* --- Moderne : grille nette, chiffres, bandeau image large --- */
+.st-moderne .s-head{border-bottom:1px solid color-mix(in srgb,var(--ink) 12%,transparent)}
+.st-moderne .s-hero{flex-direction:column;align-items:stretch;gap:28px;padding-top:44px}
+.st-moderne .s-hero-txt{flex:none;display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px 48px;align-items:end}
+.st-moderne .s-hero h1{font-size:clamp(2.4rem,7cqi,4.6rem);letter-spacing:-.04em;grid-column:1/-1}
+.st-moderne .s-img{flex:none;min-height:260px;border-radius:12px;background:linear-gradient(0deg,var(--soft),var(--soft))}
+.st-moderne .s-badge{right:16px;bottom:16px;border-radius:8px}
+.st-moderne .s-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));border-top:1px solid color-mix(in srgb,var(--ink) 15%,transparent)}
+.st-moderne .s-stats div{padding:18px 18px 0 0;display:flex;flex-direction:column;gap:4px;font-size:13px;opacity:.85}
+.st-moderne .s-stats strong{font-family:var(--fd);font-size:24px;opacity:1}
+.st-moderne .s-ctas{justify-content:flex-start}
+.st-moderne .s-card{border-top:2px solid var(--ink);padding:18px 0 0}
+.st-moderne .s-card i{font-style:normal;font-family:var(--fd);font-weight:800;color:var(--accent);font-size:14px}
+.st-moderne .s-alt{background:var(--soft2)}
+.st-moderne .s-gal div,.st-moderne .s-map,.st-moderne .s-slots span,.st-moderne .s-cta{border-radius:12px}
+.st-moderne .s-hours{border:1px solid color-mix(in srgb,var(--ink) 15%,transparent);border-radius:12px}
+
+/* --- Élégant : centré, filets fins, cadre décalé --- */
+.st-elegant .s-head{flex-direction:column;gap:10px;padding-top:26px}
+.st-elegant .brand{font-size:28px;font-weight:700;letter-spacing:.02em}
+.st-elegant .s-menu{gap:26px;font-weight:600;text-transform:uppercase;letter-spacing:.12em;font-size:11px;border-top:1px solid color-mix(in srgb,var(--ink) 25%,transparent);border-bottom:1px solid color-mix(in srgb,var(--ink) 25%,transparent);padding:10px 0}
+.st-elegant .s-head>.s-btn{display:none}
+.st-elegant .s-hero{flex-direction:column;text-align:center;gap:36px;padding-top:40px}
+.st-elegant .s-hero-txt{align-items:center;flex:none}
+.st-elegant .s-hero h1{font-size:clamp(2.6rem,7.4cqi,4.8rem);font-weight:700;font-style:italic;line-height:.98;max-width:14ch}
+.st-elegant .s-hero-txt>p{margin:0 auto}
+.st-elegant .s-ctas{justify-content:center}
+.st-elegant .s-btn{border-radius:0;letter-spacing:.08em;text-transform:uppercase;font-size:12px;padding:15px 24px}
+.st-elegant .s-img{flex:none;width:min(100%,640px);min-height:300px;margin:0 auto;outline:1px solid var(--ink);outline-offset:12px}
+.st-elegant .s-badge{display:none}
+.st-elegant .s-sec h2{font-weight:700;font-style:italic;text-align:center;width:100%}
+.st-elegant .s-sec-head{justify-content:center;text-align:center;flex-direction:column;align-items:center}
+.st-elegant .s-card{text-align:center;align-items:center;border-top:1px solid var(--ink);padding:22px 8px}
+.st-elegant .s-card i{display:none}
+.st-elegant .s-alt{background:var(--soft2)}
+.st-elegant .s-hours{border:1px solid var(--ink)}
+.st-elegant .s-cta{flex-direction:column;text-align:center}
+.st-elegant .s-cta h2{font-style:italic;font-weight:700}
+
+/* --- Coloré : blocs vifs, autocollants, contours épais --- */
+.st-peps .s-hero{background:var(--soft2);margin:8px 3% 0;border-radius:32px;border:3px solid var(--ink)}
+.st-peps .s-hero h1{font-weight:400;line-height:.95}
+.st-peps .s-sec h2,.st-peps .s-cta h2,.st-peps .brand,.st-peps .s-card strong{font-weight:400}
+.st-peps .s-tag{align-self:flex-start;background:var(--bg);border:2px solid var(--ink);font-size:13px;font-weight:800;padding:7px 14px;border-radius:999px;transform:rotate(-3deg)}
+.st-peps .s-btn{border-radius:999px;border:3px solid var(--ink);box-shadow:4px 4px 0 var(--ink)}
+.st-peps .s-btn.alt{box-shadow:4px 4px 0 var(--ink);background:var(--bg)}
+.st-peps .s-img{border-radius:50%;aspect-ratio:1;flex:0 1 320px;min-height:0;border:3px solid var(--ink);background:var(--soft)}
+.st-peps .s-img{overflow:visible}
+.st-peps .s-img svg.scene,.st-peps .s-img img.photo{clip-path:circle(50% at 50% 50%)}
+.st-peps .s-img .ph{display:none}
+.st-peps .s-badge{right:-4%;top:4%;border-radius:999px;border:2px solid var(--ink);transform:rotate(8deg);background:var(--accent);color:var(--onaccent);box-shadow:none}
+.st-peps .s-card{border:3px solid var(--ink);border-radius:24px;box-shadow:5px 5px 0 var(--ink)}
+.st-peps .s-card:nth-child(4n+1){background:var(--soft)}
+.st-peps .s-card:nth-child(4n+2){background:var(--soft2)}
+.st-peps .s-card:nth-child(4n+3){background:var(--accent);color:var(--onaccent)}
+.st-peps .s-card:nth-child(4n+4){background:var(--bg)}
+.st-peps .s-card i{display:none}
+.st-peps .s-gal div{border-radius:24px;border:3px solid var(--ink)}
+.st-peps .s-slots span{border-radius:999px;box-shadow:inset 0 0 0 3px var(--ink)}
+.st-peps .s-hours,.st-peps .s-map{border:3px solid var(--ink);border-radius:24px}
+.st-peps .s-cta{border-radius:32px}
+
+@container (max-width:560px){.burger{display:inline-flex}.s-head>.s-btn{display:none}.s-menu{display:none}.st-elegant .s-menu{display:none}.s-hero{padding-top:14px}.s-img{min-height:220px}.st-chaleureux .s-img{min-height:280px}.st-peps .s-img{flex-basis:240px}}
+</style>
+</head>
+<body>
+<a href="#quiz" class="skip">Aller au questionnaire</a>
+<header class="top">
+<a class="logo" href="./"><svg width="36" height="36" viewBox="0 0 40 40" aria-hidden="true"><path d="M4 36V20a16 16 0 0 1 32 0v16Z" fill="#EC6A33"></path><circle cx="20" cy="22" r="6" fill="#FFE6A3"></circle></svg><span class="d" style="font-size:32px">nomly</span></a>
+<a class="back" href="./">← Retour au site</a>
+</header>
+
+<main class="wrap">
+<section class="quiz" id="quiz" aria-labelledby="quiz-title">
+<div class="intro">
+<h1 class="d" id="quiz-title">Votre site en 1 minute</h1>
+<p>Répondez à 5 questions : votre site se construit en direct. Gratuit, sans inscription.</p>
+</div>
+<div class="progress" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+
+<div class="step" data-step="0">
+<p class="q">Question 1 sur 5</p>
+<h2 class="d">Quel est votre métier ?</h2>
+<div class="opts" data-group="metier" role="group" aria-label="Votre métier"></div>
+</div>
+
+<div class="step" data-step="1">
+<p class="q">Question 2 sur 5</p>
+<h2 class="d">Comment s’appelle votre entreprise ?</h2>
+<div class="field"><label for="f-nom">Nom de l’entreprise</label><input id="f-nom" type="text" maxlength="40" autocomplete="organization" placeholder="Ex. : Martin Plomberie"></div>
+<div class="field"><label for="f-ville">Votre ville</label><input id="f-ville" type="text" maxlength="40" placeholder="Ex. : Nantes"></div>
+<div class="field"><span class="lab" id="col-lab">Votre couleur (facultatif)</span><div class="colors" role="group" aria-labelledby="col-lab" id="colors"></div></div>
+<div class="field"><span class="lab">Votre logo (facultatif)</span><div class="upload"><input type="file" id="f-logo" accept="image/*"><label class="up" for="f-logo">Ajouter mon logo</label><img class="thumb" id="logo-thumb" alt="Aperçu du logo"><button type="button" class="rm" id="logo-rm">Retirer</button></div></div>
+</div>
+
+<div class="step" data-step="2">
+<p class="q">Question 3 sur 5</p>
+<h2 class="d">Quel style vous ressemble ?</h2>
+<div class="opts" data-group="style" role="group" aria-label="Le style de votre site"></div>
+</div>
+
+<div class="step" data-step="3">
+<p class="q">Question 4 sur 5</p>
+<h2 class="d">Que doivent pouvoir faire vos clients ?</h2>
+<p class="hint">Plusieurs choix possibles.</p>
+<div class="opts" data-group="actions" role="group" aria-label="Fonctionnalités souhaitées"></div>
+</div>
+
+<div class="step" data-step="4">
+<p class="q">Question 5 sur 5</p>
+<h2 class="d">Votre phrase d’accueil</h2>
+<div class="opts" data-group="accroche" role="group" aria-label="Phrases d’accueil proposées" style="grid-template-columns:1fr"></div>
+<div class="field" style="margin-top:14px"><label for="f-accroche">Ou écrivez la vôtre</label><input id="f-accroche" type="text" maxlength="70" placeholder="Votre phrase…"></div>
+<div class="field"><span class="lab">Une photo de vos réalisations (facultatif)</span><div class="upload"><input type="file" id="f-photo" accept="image/*"><label class="up" for="f-photo">Ajouter une photo</label><img class="thumb" id="photo-thumb" alt="Aperçu de la photo"><button type="button" class="rm" id="photo-rm">Retirer</button></div><p class="small-note">Vos images restent sur votre appareil : rien n’est envoyé.</p></div>
+</div>
+
+<div class="step" data-step="5">
+<p class="q">Votre résultat</p>
+<h2 class="d">Votre site est prêt à prendre vie.</h2>
+<div class="result" id="result" aria-live="polite"></div>
+</div>
+
+<div class="nav">
+<button class="btn btn-ghost" id="prev" type="button">← Retour</button>
+<button class="btn btn-main" id="next" type="button">Suivant →</button>
+</div>
+</section>
+
+<section class="stage" aria-label="Aperçu de votre site">
+<div class="bar">
+<p>Aperçu en direct</p>
+<div class="toggle" role="group" aria-label="Taille de l’aperçu">
+<button type="button" id="v-desk" aria-pressed="true">Ordinateur</button>
+<button type="button" id="v-mob" aria-pressed="false">Téléphone</button>
+</div>
+</div>
+<div class="browser" id="browser">
+<div class="chrome"><i style="background:#EC6A33"></i><i style="background:#FFE6A3"></i><i style="background:#CFE2FF"></i><span class="url" id="url">votre-entreprise.fr</span></div>
+<div class="viewport" id="viewport">
+<div class="site" id="site"></div>
+<div class="ribbon">Aperçu Nomly — votre vrai site aura vos photos et vos textes</div>
+</div>
+</div>
+</section>
+</main>
+
+<footer style="padding:20px clamp(16px,3vw,40px);display:flex;flex-wrap:wrap;gap:12px 24px;justify-content:space-between;font-size:14px">
+<span>© Nomly — Vertou (44)</span>
+<nav aria-label="Informations légales" style="display:flex;gap:20px;flex-wrap:wrap"><a href="mentions-legales.html">Mentions légales</a><a href="confidentialite.html">Confidentialité</a></nav>
+</footer>
+
+<script>
+(function(){
+var METIERS={"plombier": {"label": "Plombier / chauffagiste", "sub": "Dépannage, sanitaire, chauffage", "tag": "Plombier", "services": [["Dépannage", "Fuite, panne, débouchage : on intervient vite."], ["Salle de bain", "Rénovation complète, clé en main."], ["Chauffage", "Chaudière, pompe à chaleur, entretien."], ["Devis gratuit", "Un prix clair avant de commencer."]], "gal": "Nos chantiers", "galMenu": "Chantiers", "galItems": ["Salle de bain", "Chaufferie", "Cuisine"], "acc": ["Votre plombier de confiance à {ville}.", "Dépannage rapide, travaux soignés.", "L’eau, le chauffage : on s’occupe de tout."], "intro": "Dépannage, rénovation et chauffage, avec un devis clair.", "badge": "Intervention rapide", "servTitle": "Nos interventions", "ctaTitle": "Une fuite, un projet ?", "stats": [["Devis", "gratuit"], ["Intervention", "rapide"], ["Travail", "soigné"]], "hours": [["Lun – Ven", "8 h – 18 h"], ["Samedi", "Sur rendez-vous"], ["Dimanche", "Fermé"]]}, "electricien": {"label": "Électricien", "sub": "Installation, dépannage, mise aux normes", "tag": "Électricien", "services": [["Dépannage", "Panne, court-circuit, disjoncteur."], ["Rénovation", "Mise aux normes de votre installation."], ["Éclairage", "Intérieur, extérieur, LED."], ["Borne de recharge", "Pour votre véhicule électrique."]], "gal": "Nos réalisations", "galMenu": "Réalisations", "galItems": ["Tableau électrique", "Éclairage", "Borne"], "acc": ["Votre électricien à {ville}.", "Une installation sûre, aux normes.", "Du dépannage à la rénovation complète."], "intro": "Installations sûres et aux normes, du dépannage à la rénovation.", "badge": "Devis gratuit", "servTitle": "Nos prestations", "ctaTitle": "Un projet électrique ?", "stats": [["Mise", "aux normes"], ["Devis", "gratuit"], ["Intervention", "rapide"]], "hours": [["Lun – Ven", "8 h – 18 h"], ["Samedi", "Sur rendez-vous"], ["Dimanche", "Fermé"]]}, "menuisier": {"label": "Menuisier / charpentier", "sub": "Sur mesure, agencement, bois", "tag": "Menuisier", "services": [["Sur mesure", "Placards, dressings, bibliothèques."], ["Agencement", "Cuisines et intérieurs en bois."], ["Extérieur", "Terrasses, pergolas, bardage."], ["Fenêtres & portes", "Pose et remplacement."]], "gal": "Nos réalisations", "galMenu": "Réalisations", "galItems": ["Dressing", "Terrasse", "Escalier"], "acc": ["Le bois, travaillé sur mesure.", "Votre menuisier à {ville}.", "Des réalisations faites pour durer."], "intro": "Du sur-mesure en bois, pensé pour votre intérieur et votre extérieur.", "badge": "Fait sur mesure", "servTitle": "Notre savoir-faire", "ctaTitle": "Parlons de votre projet.", "stats": [["Fabrication", "sur mesure"], ["Bois", "de qualité"], ["Devis", "gratuit"]], "hours": [["Lun – Ven", "8 h – 18 h"], ["Samedi", "Sur rendez-vous"], ["Dimanche", "Fermé"]]}, "peintre": {"label": "Peintre / plaquiste", "sub": "Peinture, décoration, isolation", "tag": "Peintre", "services": [["Peinture intérieure", "Murs, plafonds, boiseries."], ["Façades", "Ravalement et protection."], ["Plâtrerie", "Cloisons, isolation, faux plafonds."], ["Décoration", "Conseils couleurs et finitions."]], "gal": "Avant / après", "galMenu": "Avant / après", "galItems": ["Salon", "Façade", "Chambre"], "acc": ["Des finitions impeccables.", "Votre peintre à {ville}.", "Redonnez des couleurs à votre intérieur."], "intro": "Peinture, plâtrerie et décoration, avec des finitions soignées.", "badge": "Chantier propre", "servTitle": "Nos prestations", "ctaTitle": "Envie de changement ?", "stats": [["Chantier", "propre"], ["Finitions", "soignées"], ["Devis", "gratuit"]], "hours": [["Lun – Ven", "8 h – 18 h"], ["Samedi", "Sur rendez-vous"], ["Dimanche", "Fermé"]]}, "macon": {"label": "Maçon / couvreur", "sub": "Gros œuvre, toiture, extension", "tag": "Maçon", "services": [["Maçonnerie", "Murs, fondations, dalles."], ["Extension", "Agrandir votre maison."], ["Toiture", "Réparation, rénovation, zinguerie."], ["Rénovation", "Du sol au toit."]], "gal": "Nos chantiers", "galMenu": "Chantiers", "galItems": ["Extension", "Toiture", "Mur en pierre"], "acc": ["Des fondations solides pour vos projets.", "Votre maçon à {ville}.", "Construire, rénover, protéger."], "intro": "Gros œuvre, extensions et toitures, avec un suivi de chantier sérieux.", "badge": "Suivi de chantier", "servTitle": "Notre savoir-faire", "ctaTitle": "Un projet de travaux ?", "stats": [["Suivi", "de chantier"], ["Devis", "gratuit"], ["Travaux", "soignés"]], "hours": [["Lun – Ven", "8 h – 18 h"], ["Samedi", "Sur rendez-vous"], ["Dimanche", "Fermé"]]}, "paysagiste": {"label": "Paysagiste", "sub": "Création, entretien de jardins", "tag": "Paysagiste", "services": [["Création", "Jardins, massifs, gazon."], ["Entretien", "Tonte, taille, désherbage."], ["Aménagement", "Terrasses, allées, clôtures."], ["Élagage", "Arbres et haies en sécurité."]], "gal": "Avant / après", "galMenu": "Avant / après", "galItems": ["Jardin", "Terrasse", "Haie"], "acc": ["Un jardin qui vous ressemble.", "Votre paysagiste à {ville}.", "Créer, entretenir, embellir."], "intro": "Création et entretien de jardins, pour les particuliers et les pros.", "badge": "Devis gratuit", "servTitle": "Nos prestations", "ctaTitle": "On imagine votre jardin ?", "stats": [["Entretien", "à l’année"], ["Devis", "gratuit"], ["Conseils", "personnalisés"]], "hours": [["Lun – Ven", "8 h – 18 h"], ["Samedi", "Sur rendez-vous"], ["Dimanche", "Fermé"]]}, "boulangerie": {"label": "Artisan de bouche", "sub": "Boulanger, pâtissier, boucher…", "tag": "Artisan", "services": [["Fait maison", "Tout est préparé sur place."], ["Spécialités", "Les incontournables de la maison."], ["Commandes", "Pour vos fêtes et événements."], ["Produits locaux", "Des fournisseurs de la région."]], "gal": "Nos produits", "galMenu": "Produits", "galItems": ["Pains", "Pâtisseries", "Spécialités"], "acc": ["Le goût du fait maison.", "Votre artisan à {ville}.", "Fait sur place, chaque jour."], "intro": "Des produits faits sur place, chaque jour.", "badge": "Fait maison", "servTitle": "Notre savoir-faire", "ctaTitle": "À très vite !", "stats": [["Fait", "maison"], ["Produits", "locaux"], ["Commandes", "la veille"]], "hours": [["Mar – Sam", "7 h – 19 h 30"], ["Dimanche", "7 h – 13 h"], ["Lundi", "Fermé"]]}, "beaute": {"label": "Coiffure / esthétique", "sub": "Salon, institut, barbier", "tag": "Salon", "services": [["Coupes", "Femme, homme, enfant."], ["Couleur", "Balayage, coloration, reflets."], ["Soins", "Visage, mains, bien-être."], ["Conseils", "On prend le temps de vous écouter."]], "gal": "Le salon", "galMenu": "Le salon", "galItems": ["Coupes", "Couleurs", "Le salon"], "acc": ["Votre style, notre savoir-faire.", "Prenez soin de vous à {ville}.", "Le salon où l’on se sent bien."], "intro": "Un moment pour vous, entre de bonnes mains.", "badge": "Sur rendez-vous", "servTitle": "Nos prestations", "ctaTitle": "Envie d’un changement ?", "stats": [["Rendez-vous", "en ligne"], ["Produits", "professionnels"], ["Accueil", "sur mesure"]], "hours": [["Mar – Ven", "9 h – 19 h"], ["Samedi", "8 h 30 – 17 h"], ["Dim – Lun", "Fermé"]]}, "autre": {"label": "Autre artisan", "sub": "Carreleur, serrurier, couturier…", "tag": "Artisan", "services": [["Nos prestations", "Ce que nous faisons de mieux."], ["Conseil", "Un accompagnement sur mesure."], ["Réactivité", "Une réponse rapide à vos demandes."], ["Devis gratuit", "Un prix clair avant de commencer."]], "gal": "Nos réalisations", "galMenu": "Réalisations", "galItems": ["Projet 1", "Projet 2", "Projet 3"], "acc": ["Un artisan sérieux, près de chez vous.", "Votre artisan à {ville}.", "Un savoir-faire, un interlocuteur."], "intro": "Un savoir-faire artisanal et un interlocuteur unique.", "badge": "Devis gratuit", "servTitle": "Nos prestations", "ctaTitle": "Parlons de votre besoin.", "stats": [["Réponse", "rapide"], ["Devis", "gratuit"], ["Interlocuteur", "unique"]], "hours": [["Lun – Ven", "8 h – 18 h"], ["Samedi", "Sur rendez-vous"], ["Dimanche", "Fermé"]]}};
+var STYLES={
+ chaleureux:{label:"Chaleureux",sub:"Naturel et accueillant",sw:["#FBF5EA","#D9692E","#3B2418"],v:{bg:"#FBF5EA",ink:"#3B2418",accent:"#D9692E",soft:"#F3D9A4",soft2:"#EFE3CD",onaccent:"#FFFFFF",fd:"'Fraunces',serif",fb:"'Manrope',sans-serif",r:"18px"}},
+ moderne:{label:"Moderne",sub:"Net, clair, efficace",sw:["#FFFFFF","#2F6BFF","#14213D"],v:{bg:"#FFFFFF",ink:"#14213D",accent:"#2F6BFF",soft:"#DCE7F5",soft2:"#F1F4F9",onaccent:"#FFFFFF",fd:"'Manrope',sans-serif",fb:"'Manrope',sans-serif",r:"10px"}},
+ elegant:{label:"Élégant",sub:"Sobre et raffiné",sw:["#F3EEE6","#8C2F39","#2B1E17"],v:{bg:"#F3EEE6",ink:"#2B1E17",accent:"#8C2F39",soft:"#EAD7D1",soft2:"#E8E0D3",onaccent:"#FFFFFF",fd:"'Cormorant Garamond',serif",fb:"'Manrope',sans-serif",r:"4px"}},
+ peps:{label:"Coloré",sub:"Joyeux et mémorable",sw:["#FFFFFF","#FF6B4A","#8FE3C2"],v:{bg:"#FFFFFF",ink:"#1A1A1A",accent:"#FF6B4A",soft:"#8FE3C2",soft2:"#FFE27A",onaccent:"#1A1A1A",fd:"'Bagel Fat One',sans-serif",fb:"'DM Sans',sans-serif",r:"24px"}}
+};
+var ACTIONS={
+ appeler:{label:"M’appeler",sub:"Bouton d’appel direct",btn:"Appeler"},
+ devis:{label:"Demander un devis",sub:"Formulaire de contact",btn:"Demander un devis"},
+ reserver:{label:"Réserver / prendre RDV",sub:"Créneaux en ligne",btn:"Réserver"},
+ commander:{label:"Commander",sub:"Pour les artisans de bouche",btn:"Commander"},
+ horaires:{label:"Voir mes horaires et ma zone",sub:"Avec une carte",btn:null},
+ galerie:{label:"Voir mes réalisations",sub:"Photos, produits, plats",btn:null}
+};
+var state={step:0,metier:null,style:"chaleureux",actions:["appeler","devis","horaires"],acc:0,customAcc:"",nom:"",ville:"",color:null,logo:null,photo:null};
+var COLORS=["#D9692E","#C0392B","#2F6BFF","#1F7A5C","#7B4FD6","#E0A21B","#D6457A","#14213D"];
+function onColor(hex){var c=hex.replace("#",""),r=parseInt(c.substr(0,2),16),g=parseInt(c.substr(2,2),16),b=parseInt(c.substr(4,2),16);return (0.299*r+0.587*g+0.114*b)>160?"#1A1A1A":"#FFFFFF";}
+var SCENES={
+ plombier:"<rect width=\"400\" height=\"300\" class=\"f-s\"/><rect y=\"236\" width=\"400\" height=\"64\" class=\"f-s2\"/><path d=\"M40 60h120v60h80\" class=\"st-i\" fill=\"none\" stroke-width=\"22\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M40 60h120v60h80\" class=\"st-a\" fill=\"none\" stroke-width=\"12\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><rect x=\"236\" y=\"104\" width=\"24\" height=\"34\" rx=\"4\" class=\"f-i\"/><path d=\"M248 150c-10 16-10 26 0 30 10-4 10-14 0-30z\" class=\"f-b st-i\" stroke-width=\"4\"/><path d=\"M200 196h170l-14 40H214z\" class=\"f-b st-i\" stroke-width=\"6\" stroke-linejoin=\"round\"/><path d=\"M60 236l50-90 18 10-50 90z\" class=\"f-i\"/><circle cx=\"118\" cy=\"140\" r=\"22\" class=\"f-a st-i\" stroke-width=\"6\"/><circle cx=\"118\" cy=\"140\" r=\"8\" class=\"f-s\"/>",
+ electricien:"<rect width=\"400\" height=\"300\" class=\"f-s\"/><rect y=\"244\" width=\"400\" height=\"56\" class=\"f-s2\"/><path d=\"M200 0v60\" class=\"st-i\" stroke-width=\"6\"/><circle cx=\"200\" cy=\"120\" r=\"56\" class=\"f-b st-i\" stroke-width=\"6\"/><path d=\"M184 168h32v26h-32z\" class=\"f-i\"/><path d=\"M190 100l16 20-12 4 14 22\" class=\"st-a\" fill=\"none\" stroke-width=\"7\" stroke-linecap=\"round\" stroke-linejoin=\"round\"/><path d=\"M110 120H80M320 120h-30M136 62l-20-20M264 62l20-20M136 178l-20 20M264 178l20 20\" class=\"st-a\" stroke-width=\"8\" stroke-linecap=\"round\"/><rect x=\"40\" y=\"190\" width=\"70\" height=\"54\" rx=\"8\" class=\"f-a st-i\" stroke-width=\"5\"/><circle cx=\"64\" cy=\"217\" r=\"6\" class=\"f-i\"/><circle cx=\"86\" cy=\"217\" r=\"6\" class=\"f-i\"/><path d=\"M110 217c40 0 40 40 90 40h120\" class=\"st-i\" fill=\"none\" stroke-width=\"6\" stroke-linecap=\"round\"/>",
+ menuisier:"<rect width=\"400\" height=\"300\" class=\"f-s\"/><rect y=\"230\" width=\"400\" height=\"70\" class=\"f-s2\"/><rect x=\"40\" y=\"200\" width=\"320\" height=\"22\" rx=\"4\" class=\"f-i\"/><path d=\"M60 222v50M340 222v50\" class=\"st-i\" stroke-width=\"12\"/><g class=\"st-i\" stroke-width=\"4\"><rect x=\"70\" y=\"120\" width=\"200\" height=\"24\" rx=\"3\" class=\"f-a\"/><rect x=\"90\" y=\"146\" width=\"200\" height=\"24\" rx=\"3\" class=\"f-b\"/><rect x=\"60\" y=\"172\" width=\"200\" height=\"24\" rx=\"3\" class=\"f-a\"/></g><path d=\"M100 132h40M150 132h30M120 158h50M90 184h40\" class=\"st-i\" stroke-width=\"3\" opacity=\".5\"/><path d=\"M290 70l70 120-24 10-70-120z\" class=\"f-b st-i\" stroke-width=\"5\" stroke-linejoin=\"round\"/><path d=\"M296 82l10-6M306 100l10-6M316 118l10-6M326 136l10-6M336 154l10-6\" class=\"st-i\" stroke-width=\"4\"/><rect x=\"262\" y=\"40\" width=\"44\" height=\"44\" rx=\"10\" class=\"f-a st-i\" stroke-width=\"5\" transform=\"rotate(-30 284 62)\"/>",
+ peintre:"<rect width=\"400\" height=\"300\" class=\"f-s\"/><path d=\"M0 0h230v300H0z\" class=\"f-a\"/><path d=\"M230 0v170c-10 10-20-10-30 0s-20 30-30 10\" class=\"f-a\"/><path d=\"M208 150v40M180 160v26\" class=\"st-a\" stroke-width=\"10\" stroke-linecap=\"round\"/><rect y=\"250\" width=\"400\" height=\"50\" class=\"f-s2\"/><rect x=\"240\" y=\"60\" width=\"120\" height=\"44\" rx=\"10\" class=\"f-b st-i\" stroke-width=\"6\"/><path d=\"M360 82h18v50h-80v40\" class=\"st-i\" fill=\"none\" stroke-width=\"8\" stroke-linejoin=\"round\"/><rect x=\"288\" y=\"172\" width=\"20\" height=\"70\" rx=\"6\" class=\"f-i\"/><path d=\"M60 196h80l-8 54H68z\" class=\"f-b st-i\" stroke-width=\"6\" stroke-linejoin=\"round\"/><path d=\"M60 196c0-14 80-14 80 0\" class=\"f-a st-i\" stroke-width=\"6\"/>",
+ paysagiste:"<rect width=\"400\" height=\"300\" class=\"f-s\"/><circle cx=\"320\" cy=\"64\" r=\"30\" class=\"f-b\"/><path d=\"M0 220c80-60 160-60 240-20s120 20 160 0v100H0z\" class=\"f-s2\"/><path d=\"M0 250c100-30 200-30 400 0v50H0z\" class=\"f-a\" opacity=\".35\"/><rect x=\"92\" y=\"150\" width=\"14\" height=\"80\" class=\"f-i\"/><circle cx=\"99\" cy=\"128\" r=\"46\" class=\"f-a st-i\" stroke-width=\"5\"/><rect x=\"232\" y=\"176\" width=\"12\" height=\"54\" class=\"f-i\"/><circle cx=\"238\" cy=\"160\" r=\"30\" class=\"f-b st-i\" stroke-width=\"5\"/><rect x=\"260\" y=\"214\" width=\"120\" height=\"30\" rx=\"15\" class=\"f-a st-i\" stroke-width=\"5\"/><g class=\"st-i\" stroke-width=\"6\" fill=\"none\" stroke-linecap=\"round\"><path d=\"M150 190l40 40M190 190l-40 40\"/><circle cx=\"146\" cy=\"186\" r=\"8\"/><circle cx=\"194\" cy=\"186\" r=\"8\"/></g>",
+ artisan:'<rect width="400" height="300" class="f-s"/><circle cx="320" cy="70" r="34" class="f-b"/><rect y="236" width="400" height="64" class="f-s2"/><path d="M90 236V140l90-62 90 62v96z" class="f-b st-i" stroke-width="5" stroke-linejoin="round"/><path d="M74 150l106-78 106 78" class="st-i" fill="none" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/><path d="M78 148l102-74 102 74v-18L180 56 78 130z" class="f-a"/><rect x="160" y="176" width="40" height="60" rx="4" class="f-i"/><rect x="108" y="160" width="34" height="30" rx="3" class="f-s st-i" stroke-width="4"/><rect x="218" y="160" width="34" height="30" rx="3" class="f-s st-i" stroke-width="4"/><path d="M300 236l26-128M340 236l-14-128M306 210h26M311 184h20M316 158h14M321 132h8" class="st-i" fill="none" stroke-width="6" stroke-linecap="round"/><rect x="40" y="208" width="58" height="30" rx="5" class="f-a st-i" stroke-width="4"/><path d="M56 208v-10h26v10" class="st-i" fill="none" stroke-width="4"/>',
+ boulangerie:'<rect width="400" height="300" class="f-s"/><rect x="0" y="92" width="400" height="10" class="f-s2"/><rect x="0" y="170" width="400" height="10" class="f-s2"/><rect y="226" width="400" height="74" class="f-i"/><g class="st-i" stroke-width="4"><rect x="40" y="52" width="120" height="30" rx="15" transform="rotate(-8 100 67)" class="f-a"/><rect x="170" y="56" width="130" height="28" rx="14" transform="rotate(6 235 70)" class="f-b"/><ellipse cx="80" cy="146" rx="46" ry="26" class="f-a"/><ellipse cx="200" cy="146" rx="46" ry="26" class="f-b"/><ellipse cx="320" cy="146" rx="46" ry="26" class="f-a"/><path d="M90 214c10-34 70-34 80 0-14 8-26-6-40-6s-26 14-40 6z" class="f-b"/><path d="M230 214c10-34 70-34 80 0-14 8-26-6-40-6s-26 14-40 6z" class="f-a"/></g><path d="M64 140l14-10M84 146l14-10M184 140l14-10M204 146l14-10M304 140l14-10M324 146l14-10M70 64l8 8M96 60l8 8M190 66l8-8M216 70l8-8" class="st-i" stroke-width="4" stroke-linecap="round"/>',
+ beaute:'<rect width="400" height="300" class="f-s"/><rect y="240" width="400" height="60" class="f-s2"/><path d="M120 214V96a80 80 0 0 1 160 0v118z" class="f-b st-i" stroke-width="6"/><path d="M146 200V100a54 54 0 0 1 108 0v100z" class="f-s2"/><rect x="104" y="214" width="192" height="16" rx="8" class="f-i"/><path d="M166 270v-34h68v34M150 236h100" class="st-i" fill="none" stroke-width="8" stroke-linecap="round"/><g class="st-i" stroke-width="5" fill="none" stroke-linecap="round"><circle cx="336" cy="120" r="12"/><circle cx="336" cy="164" r="12"/><path d="M344 128l26 40M344 156l26-40"/></g><path d="M44 240c0-30 10-60 26-80M60 240c4-26 20-46 38-56M50 240c-6-22-6-42 2-60" class="st-a" fill="none" stroke-width="8" stroke-linecap="round"/><rect x="34" y="236" width="44" height="34" rx="6" class="f-a"/>',
+ restaurant:'<rect width="400" height="300" class="f-s"/><path d="M200 0v54" class="st-i" stroke-width="4"/><path d="M164 84a36 30 0 0 1 72 0z" class="f-a"/><ellipse cx="200" cy="232" rx="190" ry="54" class="f-s2"/><circle cx="200" cy="214" r="62" class="f-b st-i" stroke-width="5"/><circle cx="200" cy="214" r="40" class="f-a"/><circle cx="186" cy="204" r="9" class="f-b"/><circle cx="212" cy="222" r="7" class="f-s"/><path d="M96 170v40c0 8 6 12 12 12v40M108 170v30M120 170v40c0 8-6 12-12 12M300 170c-12 0-16 14-16 34v20h16v38" class="st-i" fill="none" stroke-width="6" stroke-linecap="round"/><path d="M330 150h30l-4 52h-22z" class="f-b st-i" stroke-width="4"/><path d="M345 202v34M330 238h30" class="st-i" stroke-width="4"/>',
+ boutique:'<rect width="400" height="300" class="f-s"/><rect x="60" y="70" width="280" height="190" class="f-b st-i" stroke-width="5"/><path d="M50 70h300v34H50z" class="f-a"/><path d="M50 104a17 17 0 0 0 34 0a17 17 0 0 0 34 0a17 17 0 0 0 34 0a17 17 0 0 0 34 0a17 17 0 0 0 34 0a17 17 0 0 0 34 0a17 17 0 0 0 34 0a17 17 0 0 0 34 0a17 17 0 0 0 30 0" class="f-a"/><path d="M84 70v34M118 70v34M152 70v34M186 70v34M220 70v34M254 70v34M288 70v34M322 70v34" class="st-b" stroke-width="8"/><rect x="82" y="138" width="130" height="96" class="f-s2 st-i" stroke-width="4"/><rect x="236" y="138" width="80" height="122" class="f-i"/><circle cx="300" cy="202" r="5" class="f-b"/><path d="M106 234v-40h30v40M150 234v-56h34v56" class="f-a st-i" stroke-width="3"/><path d="M118 194v-10a6 6 0 0 1 12 0v10M160 178v-10a7 7 0 0 1 14 0v10" class="st-i" fill="none" stroke-width="3"/><rect y="260" width="400" height="40" class="f-s2"/>',
+ autre:'<rect width="400" height="300" class="f-s"/><rect y="220" width="400" height="80" class="f-s2"/><rect x="60" y="200" width="280" height="14" rx="7" class="f-i"/><path d="M120 200l14-90h132l14 90z" class="f-b st-i" stroke-width="5" stroke-linejoin="round"/><rect x="146" y="124" width="108" height="60" rx="4" class="f-a"/><path d="M160 144h60M160 160h40" class="st-b" stroke-width="6" stroke-linecap="round"/><rect x="296" y="164" width="30" height="36" rx="6" class="f-a st-i" stroke-width="4"/><path d="M326 174c12 0 12 18 0 18" class="st-i" fill="none" stroke-width="4"/><path d="M78 200c0-28 6-56 22-74M92 200c2-22 14-40 30-48" class="st-i" fill="none" stroke-width="6" stroke-linecap="round"/><rect x="66" y="180" width="40" height="22" rx="4" class="f-a"/>'
+};
+function scene(){var k=state.metier||"plombier";var sc=SCENES[k]||(k==="macon"?SCENES.artisan:SCENES.autre);return '<svg class="scene" viewBox="0 0 400 300" preserveAspectRatio="xMidYMid slice" aria-hidden="true">'+sc+'</svg>';}
+
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c];});}
+function slug(s){return (s||"votre-entreprise").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"")||"votre-entreprise";}
+
+function mini(k){var v=STYLES[k].v,a=v.accent,i=v.ink,s2=v.soft;
+  var ln='<span class="ln"><b style="background:'+i+'"></b><b style="background:'+i+';opacity:.4"></b><b style="background:'+a+'"></b></span>';
+  if(k==="chaleureux")return '<span class="mini" style="background:'+v.bg+'">'+ln+'<b style="width:36%;background:'+v.soft+';border-radius:99px 99px 4px 4px"></b></span>';
+  if(k==="moderne")return '<span class="mini" style="background:'+v.bg+';flex-direction:column"><b style="height:7px;width:70%;background:'+i+';border-radius:2px"></b><b style="flex:1;background:'+v.soft+';border-radius:4px"></b></span>';
+  if(k==="elegant")return '<span class="mini" style="background:'+v.bg+';flex-direction:column;align-items:center"><b style="height:6px;width:50%;background:'+i+'"></b><b style="flex:1;width:60%;background:'+v.soft+';outline:1px solid '+i+';outline-offset:2px"></b></span>';
+  return '<span class="mini" style="background:'+v.soft2+';border:2px solid '+i+'">'+ln+'<b style="width:34px;height:34px;align-self:center;border-radius:50%;background:'+v.soft+';border:2px solid '+i+'"></b></span>';}
+function opt(group,key,o,pressed){
+  var sw=group==="style"?mini(key):o.sw?'<span class="sw" aria-hidden="true">'+o.sw.map(function(c){return '<i style="background:'+c+'"></i>';}).join("")+'</span>':"";
+  return '<button type="button" class="opt" data-group="'+group+'" data-key="'+key+'" aria-pressed="'+(pressed?"true":"false")+'">'+sw+esc(o.label)+(o.sub?'<small>'+esc(o.sub)+'</small>':"")+'</button>';
+}
+function buildOptions(){
+  var g=document.querySelector('[data-group="metier"].opts');
+  g.innerHTML=Object.keys(METIERS).map(function(k){return opt("metier",k,METIERS[k],state.metier===k);}).join("");
+  g=document.querySelector('[data-group="style"].opts');
+  g.innerHTML=Object.keys(STYLES).map(function(k){return opt("style",k,STYLES[k],state.style===k);}).join("");
+  g=document.querySelector('[data-group="actions"].opts');
+  g.innerHTML=Object.keys(ACTIONS).map(function(k){return opt("actions",k,ACTIONS[k],state.actions.indexOf(k)>-1);}).join("");
+  buildAcc(); buildColors();
+}
+function buildColors(){
+  var g=document.getElementById("colors");
+  g.innerHTML=COLORS.map(function(c){return '<button type="button" data-color="'+c+'" style="background:'+c+'" aria-label="Couleur '+c+'" aria-pressed="'+(state.color===c?"true":"false")+'"></button>';}).join("")+'<button type="button" class="reset" data-color="" aria-pressed="'+(state.color?"false":"true")+'">Couleur du style</button>';
+}
+function m(){return METIERS[state.metier||"plombier"];}
+function villeTxt(){return state.ville.trim()||"votre ville";}
+function nomTxt(){return state.nom.trim()||"Votre entreprise";}
+function accText(i){var t=m().acc[i];if(!state.ville.trim())return t.replace(" à {ville}"," près de chez vous").replace("{ville}","votre ville");return t.replace("{ville}",state.ville.trim());}
+function buildAcc(){
+  var g=document.querySelector('[data-group="accroche"].opts');
+  g.innerHTML=m().acc.map(function(_,i){return opt("accroche",String(i),{label:accText(i)},!state.customAcc&&state.acc===i);}).join("");
+}
+function headline(){return state.customAcc.trim()||accText(state.acc);}
+
+function recommend(){
+  var a=state.actions, S=STYLES[state.style].label;
+  if(a.indexOf("reserver")>-1||a.indexOf("commander")>-1) return {name:"Sur-mesure",price:"1 290 €",why:"Vous voulez que vos clients puissent réserver ou commander en ligne : c’est inclus dans Sur-mesure, avec un design 100 % unique créé pour vous et les textes rédigés.",alt:"Sans la réservation en ligne, ce style « "+S+" » existe aussi en Pro à 890 €."};
+  if(a.indexOf("galerie")>-1||a.length>=3) return {name:"Pro",price:"890 €",why:"Plusieurs pages pour présenter vos services et vos réalisations, avec le style « "+S+" » adapté à vos couleurs, plus votre fiche Google.",alt:"Envie d’un design 100 % unique ? C’est la formule Sur-mesure, à 1 290 €."};
+  return {name:"Essentiel",price:"490 €",why:"Une page claire avec l’essentiel pour être trouvé et contacté, dans le style « "+S+" » à vos couleurs.",alt:"Besoin de plus de pages ou d’un design 100 % unique ? Voir Pro (890 €) et Sur-mesure (1 290 €)."};
+}
+
+var ILL={
+ artisan:'<path d="M22 70l40-40" stroke-width="10"/><path d="M50 14l22 22 10-10L60 4z" fill="currentColor"/><path d="M60 78l18-18 14 14-18 18z"/><circle cx="26" cy="74" r="6" fill="currentColor"/>',
+ boulangerie:'<path d="M10 66c0-26 18-44 40-44s40 18 40 44c0 6-4 10-10 10H20c-6 0-10-4-10-10z" fill="currentColor" fill-opacity=".18"/><path d="M10 66c0-26 18-44 40-44s40 18 40 44c0 6-4 10-10 10H20c-6 0-10-4-10-10z"/><path d="M34 34l8 14M50 30v16M66 34l-8 14"/>',
+ beaute:'<circle cx="24" cy="26" r="12"/><circle cx="24" cy="74" r="12"/><path d="M33 34l55 46M33 66l55-46"/>',
+ restaurant:'<circle cx="50" cy="52" r="30" fill="currentColor" fill-opacity=".18"/><circle cx="50" cy="52" r="30"/><circle cx="50" cy="52" r="18"/><path d="M8 18v22c0 5 3 8 6 8v40M14 18v18M20 18v22c0 5-3 8-6 8M92 18c-7 0-10 8-10 20v14h10v36"/>',
+ boutique:'<path d="M18 34h64l-6 56H24z" fill="currentColor" fill-opacity=".18"/><path d="M18 34h64l-6 56H24z"/><path d="M36 42V26a14 14 0 0 1 28 0v16"/>',
+ autre:'<path d="M50 8l11 26 28 3-21 19 6 28-24-14-24 14 6-28L11 37l28-3z" fill="currentColor" fill-opacity=".18"/><path d="M50 8l11 26 28 3-21 19 6 28-24-14-24 14 6-28L11 37l28-3z"/>'
+};
+function illu(){return '<svg class="ill" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+(ILL[state.metier]||(state.metier==="boulangerie"?ILL.boulangerie:state.metier==="beaute"?ILL.beaute:ILL.artisan))+'</svg>';}
+function logo(){if(state.logo)return '<img src="'+state.logo+'" alt="">';return '<svg width="30" height="30" viewBox="0 0 40 40" aria-hidden="true"><rect x="2" y="2" width="36" height="36" rx="'+({chaleureux:18,moderne:8,elegant:0,peps:12}[state.style]||10)+'" fill="var(--accent)"/><text x="20" y="27" text-anchor="middle" font-size="18" font-weight="800" fill="var(--onaccent)" font-family="sans-serif">'+esc(nomTxt().charAt(0).toUpperCase())+'</text></svg>';}
+function render(){
+  var st=STYLES[state.style].v, site=document.getElementById("site"), mt=m(), A=state.actions;
+  site.className="site st-"+state.style;
+  Object.keys(st).forEach(function(k){site.style.setProperty("--"+k,st[k]);});
+  if(state.color){site.style.setProperty("--accent",state.color);site.style.setProperty("--onaccent",onColor(state.color));}
+  var btns=A.filter(function(a){return ACTIONS[a].btn;});
+  var menu=["Accueil","Services"];
+  if(A.indexOf("galerie")>-1) menu.push(mt.galMenu);
+  if(A.indexOf("reserver")>-1) menu.push("Réserver");
+  if(A.indexOf("horaires")>-1) menu.push("Horaires");
+  menu.push("Contact");
+  var ctaHtml=btns.length?btns.slice(0,2).map(function(b,i){return '<span class="s-btn'+(i?" alt":"")+'">'+esc(ACTIONS[b].btn)+'</span>';}).join(""):'<span class="s-btn">Nous contacter</span>';
+  var h='';
+  h+='<header class="s-head"><span class="brand">'+logo()+esc(nomTxt())+'</span><nav class="s-menu">'+menu.map(function(x){return '<span>'+esc(x)+'</span>';}).join("")+'</nav>'+(btns[0]?'<span class="s-btn">'+esc(ACTIONS[btns[0]].btn)+'</span>':'')+'<span class="burger" aria-hidden="true"><svg width="18" height="14" viewBox="0 0 18 14"><path d="M1 1h16M1 7h16M1 13h16" class="st-i" stroke-width="2.4" stroke-linecap="round"/></svg></span></header>';
+  var intro=esc(nomTxt())+(state.ville.trim()?" intervient à "+esc(state.ville.trim())+" et alentours. ":" intervient près de chez vous. ")+esc(mt.intro);
+  var img='<div class="s-img" aria-hidden="true">'+(state.photo?'<img class="photo" src="'+state.photo+'" alt="">':scene())+'<span class="s-badge">'+esc(mt.badge)+'</span></div>';
+  if(state.style==="moderne"){
+    h+='<section class="s-hero"><div class="s-hero-txt"><span class="s-eyebrow">'+esc(mt.tag)+' — '+esc(villeTxt())+'</span><h1>'+esc(headline())+'</h1><p>'+intro+'</p><div class="s-ctas">'+ctaHtml+'</div></div>'+img+
+       '<div class="s-stats">'+mt.stats.map(function(x){return '<div><strong>'+esc(x[0])+'</strong>'+esc(x[1])+'</div>';}).join("")+'</div></section>';
+  } else if(state.style==="elegant"){
+    h+='<section class="s-hero"><div class="s-hero-txt"><span class="s-eyebrow">'+esc(mt.tag)+' · '+esc(villeTxt())+'</span><h1>'+esc(headline())+'</h1><p>'+intro+'</p><div class="s-ctas">'+ctaHtml+'</div></div>'+img+'</section>';
+  } else {
+    h+='<section class="s-hero"><div class="s-hero-txt"><span class="s-tag">'+esc(mt.tag)+' · '+esc(villeTxt())+'</span><h1>'+esc(headline())+'</h1><p>'+intro+'</p><div class="s-ctas">'+ctaHtml+'</div></div>'+img+'</section>';
+  }
+  h+='<section class="s-sec s-alt"><div class="s-sec-head"><h2>'+esc(mt.servTitle)+'</h2></div><div class="s-cards">'+mt.services.map(function(x,i){return '<div class="s-card"><i>'+(state.style==="moderne"?"0"+(i+1):(i+1))+'</i><strong>'+esc(x[0])+'</strong><span>'+esc(x[1])+'</span></div>';}).join("")+'</div></section>';
+  if(A.indexOf("galerie")>-1){h+='<section class="s-sec"><div class="s-sec-head"><h2>'+esc(mt.gal)+'</h2></div><div class="s-gal">'+mt.galItems.map(function(g){return '<div>'+illu()+esc(g)+'</div>';}).join("")+'</div></section>';}
+  if(A.indexOf("reserver")>-1||A.indexOf("commander")>-1){
+    var res=A.indexOf("reserver")>-1;
+    h+='<section class="s-sec s-alt"><div class="s-sec-head"><h2>'+(res?"Réservez en ligne":"Commandez, on prépare")+'</h2></div><div class="s-slots">'+(res?["Mar. 10 h","Mar. 14 h 30","Mer. 9 h","Jeu. 16 h","Sam. 11 h"]:["Demain 7 h","Demain 9 h","Demain 12 h","Samedi 8 h"]).map(function(t,i){return '<span'+(i===1?' class="on"':'')+'>'+t+'</span>';}).join("")+'</div></section>';
+  }
+  h+='<section class="s-sec s-whysec"><div class="s-why">'+mt.stats.map(function(x){return '<div><strong>'+esc(x[0])+'</strong>'+esc(x[1])+'</div>';}).join("")+'</div></section>';
+  h+='<section class="s-sec" style="padding-top:0"><div class="s-reviews"><span class="s-stars">★★★★★</span><span>Vos avis Google s’afficheront ici</span></div></section>';
+  if(A.indexOf("horaires")>-1){h+='<section class="s-sec" style="padding-top:0"><div class="s-sec-head"><h2>Horaires &amp; zone d’intervention</h2></div><div class="s-info"><div class="s-hours">'+mt.hours.map(function(x){return '<div><span>'+x[0]+'</span><strong>'+x[1]+'</strong></div>';}).join("")+'</div><div class="s-map" aria-hidden="true"><b></b><span>'+esc(villeTxt())+'</span></div></div></section>';}
+  h+='<section class="s-sec s-alt"><div class="s-sec-head"><h2>Contact</h2></div><div class="s-contact"><div class="s-coord"><span><i></i>06 •• •• •• ••</span><span><i></i>contact@'+esc(slug(state.nom))+'.fr</span><span><i></i>'+esc(villeTxt())+'</span></div><div class="s-form" aria-hidden="true"><div>Votre nom</div><div>Votre téléphone</div><div class="big">Votre message</div><span class="s-btn" style="align-self:flex-start">Envoyer</span></div></div></section>';
+  h+='<div class="s-cta"><h2>'+esc(mt.ctaTitle)+'</h2>'+(btns[0]?'<span class="s-btn">'+esc(ACTIONS[btns[0]].btn)+'</span>':'<span class="s-btn">Nous contacter</span>')+'</div>';
+  h+='<footer class="s-foot"><span>© '+esc(nomTxt())+' — '+esc(villeTxt())+'</span><span>Site réalisé par Nomly</span></footer>';
+  site.innerHTML=h;
+  document.getElementById("url").textContent=slug(state.nom)+".fr";
+}
+
+function showStep(){
+  document.querySelectorAll(".step").forEach(function(s){s.classList.toggle("on",+s.dataset.step===state.step);});
+  document.querySelectorAll(".progress span").forEach(function(s,i){s.classList.toggle("on",i<=Math.min(state.step,4));});
+  var prev=document.getElementById("prev"),next=document.getElementById("next");
+  prev.style.visibility=state.step===0?"hidden":"visible";
+  next.disabled=(state.step===0&&!state.metier);
+  if(state.step===4){buildAcc();}
+  if(state.step===5){
+    var r=recommend();
+    document.getElementById("result").innerHTML='<span style="font-weight:700">Formule conseillée pour '+esc(nomTxt())+'</span><span class="d price">'+esc(r.name)+' · '+esc(r.price)+'</span><span style="line-height:1.55">'+esc(r.why)+'</span><ul><li>Vos vraies photos, vos textes, vos couleurs</li><li>En ligne en 1 à 3 semaines</li><li>Nom de domaine à votre nom</li></ul><span style="font-size:14px;line-height:1.5;border-top:2px dashed #2E1A14;padding-top:10px">'+esc(r.alt)+'</span><button type="button" id="restart" style="align-self:flex-start;background:none;border:0;text-decoration:underline;font-weight:700;padding:6px 0;color:#2E1A14">Recommencer avec un autre style</button>';
+    next.textContent="Je veux ce site →";
+  } else next.textContent="Suivant →";
+  var q=document.getElementById("quiz");
+  if(q.getBoundingClientRect().top<0) q.scrollIntoView({behavior:"smooth"});
+}
+
+document.addEventListener("click",function(e){
+  var b=e.target.closest(".opt"); if(!b) return;
+  var g=b.dataset.group,k=b.dataset.key;
+  if(g==="metier"){state.metier=k;state.acc=0;}
+  else if(g==="style"){state.style=k;}
+  else if(g==="actions"){var i=state.actions.indexOf(k);if(i>-1)state.actions.splice(i,1);else state.actions.push(k);}
+  else if(g==="accroche"){state.acc=+k;state.customAcc="";document.getElementById("f-accroche").value="";}
+  document.querySelectorAll('.opt[data-group="'+g+'"]').forEach(function(x){
+    var on=g==="actions"?state.actions.indexOf(x.dataset.key)>-1:g==="accroche"?(!state.customAcc&&+x.dataset.key===state.acc):(x.dataset.key===(g==="metier"?state.metier:state.style));
+    x.setAttribute("aria-pressed",on?"true":"false");
+  });
+  render(); showStep();
+  if(g==="metier"&&state.step===0){setTimeout(function(){if(state.step===0){state.step=1;showStep();setTimeout(function(){document.getElementById("f-nom").focus();},50);}},280);}
+});
+document.getElementById("colors").addEventListener("click",function(e){
+  var b=e.target.closest("button"); if(!b) return;
+  state.color=b.dataset.color||null; buildColors(); render();
+});
+function bindUpload(inputId,thumbId,rmId,key){
+  var inp=document.getElementById(inputId),th=document.getElementById(thumbId),rm=document.getElementById(rmId);
+  inp.addEventListener("change",function(){
+    var f=inp.files&&inp.files[0]; if(!f||!/^image\//.test(f.type)) return;
+    var rd=new FileReader(); rd.onload=function(){state[key]=rd.result;th.src=rd.result;th.style.display="block";rm.style.display="inline";render();}; rd.readAsDataURL(f);
+  });
+  rm.addEventListener("click",function(){state[key]=null;inp.value="";th.style.display="none";rm.style.display="none";render();});
+}
+bindUpload("f-logo","logo-thumb","logo-rm","logo");
+bindUpload("f-photo","photo-thumb","photo-rm","photo");
+document.querySelectorAll(".field input[type=text]").forEach(function(i){i.addEventListener("keydown",function(e){if(e.key==="Enter"){e.preventDefault();document.getElementById("next").click();}});});
+document.getElementById("result").addEventListener("click",function(e){if(e.target.id==="restart"){state.step=2;showStep();}});
+document.getElementById("f-nom").addEventListener("input",function(e){state.nom=e.target.value;render();});
+document.getElementById("f-ville").addEventListener("input",function(e){state.ville=e.target.value;render();});
+document.getElementById("f-accroche").addEventListener("input",function(e){state.customAcc=e.target.value;
+  document.querySelectorAll('.opt[data-group="accroche"]').forEach(function(x){x.setAttribute("aria-pressed",(!state.customAcc&&+x.dataset.key===state.acc)?"true":"false");});render();});
+document.getElementById("prev").addEventListener("click",function(){if(state.step>0){state.step--;showStep();}});
+document.getElementById("next").addEventListener("click",function(){
+  if(state.step<5){state.step++;showStep();return;}
+  var r=recommend();
+  var msg="Bonjour, j’ai créé un aperçu sur votre site.\nEntreprise : "+nomTxt()+" ("+m().label+") à "+villeTxt()+"\nStyle : "+STYLES[state.style].label+"\nFonctionnalités : "+state.actions.map(function(a){return ACTIONS[a].label;}).join(", ")+"\nPhrase d’accueil : "+headline()+"\nFormule conseillée : "+r.name+" ("+r.price+")";
+  try{sessionStorage.setItem("nomlyDemo",JSON.stringify({nom:state.nom,message:msg}));}catch(err){}
+  window.location.href="index.html#contact";
+});
+function setView(mob){document.getElementById("browser").classList.toggle("mobile",mob);
+  document.getElementById("v-desk").setAttribute("aria-pressed",mob?"false":"true");document.getElementById("v-mob").setAttribute("aria-pressed",mob?"true":"false");}
+document.getElementById("v-desk").addEventListener("click",function(){setView(false);});
+document.getElementById("v-mob").addEventListener("click",function(){setView(true);});
+
+buildOptions(); render(); showStep();
+})();
+</script>
+</body>
+</html>
