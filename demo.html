@@ -275,6 +275,24 @@ button{font:inherit;cursor:pointer;color:inherit}
 .links{display:flex;flex-wrap:wrap;gap:4px 18px;margin-top:12px}
 .links button{background:none;border:0;padding:6px 0;color:#FFE6A3;text-decoration:underline;font-weight:700;font-size:14px}
 
+/* dévoilement */
+.reveal{position:fixed;inset:0;z-index:50;background:#1F4D3F;display:flex;flex-direction:column;gap:12px;padding:14px clamp(12px,3vw,36px) 10px}
+.reveal[hidden]{display:none}
+.rv-bar{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:12px 20px}
+.rv-k{margin:0;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#EC6A33}
+.rv-head h2{margin:2px 0 0;color:#FFE6A3;font-size:clamp(1.6rem,3vw,2.4rem);line-height:1}
+.rv-act{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.rv-toggle{background:#F7F1E3}
+.rv-stage{flex:1;min-height:0;display:flex}
+.reveal .browser{flex:1;width:100%;display:flex;flex-direction:column;animation:rvIn .6s cubic-bezier(.2,.9,.3,1.1)}
+.reveal .browser.mobile{max-width:400px}
+.reveal .viewport{height:auto;flex:1;min-height:0}
+.rv-hint{margin:0;text-align:center;color:#E8E1CF;font-size:13px}
+@keyframes rvIn{from{opacity:0;transform:translateY(30px) scale(.97)}to{opacity:1;transform:none}}
+body.rv-open{overflow:hidden}
+@media (max-width:700px){.rv-act{width:100%}.rv-act .btn{flex:1}.rv-toggle{width:100%;justify-content:center}.rv-hint{display:none}}
+@media (prefers-reduced-motion:reduce){.reveal .browser{animation:none}}
+
 /* ===== Dispositions ===== */
 /* B — Grande image */
 .site.lay-b .s-hero{position:relative;display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;flex-wrap:nowrap;min-height:min(560px,110cqi);padding:0;margin:0;border:0;border-radius:0;background:none;text-align:left;overflow:hidden}
@@ -374,7 +392,7 @@ button{font:inherit;cursor:pointer;color:inherit}
 <div class="host-opts" id="host" role="radiogroup" aria-labelledby="host-lab"></div>
 </div>
 <div class="total" id="total" aria-live="polite"></div>
-<div class="links"><button type="button" id="to-finish">Changer la disposition ou les couleurs</button><button type="button" id="restart">Essayer un autre style</button></div>
+<div class="links"><button type="button" id="to-reveal">Revoir mon site en grand</button><button type="button" id="to-finish">Changer la disposition ou les couleurs</button><button type="button" id="restart">Essayer un autre style</button></div>
 </div>
 
 <div class="nav">
@@ -400,6 +418,19 @@ button{font:inherit;cursor:pointer;color:inherit}
 </div>
 </section>
 </main>
+
+<div class="reveal" id="reveal" role="dialog" aria-modal="true" aria-labelledby="rv-title" hidden>
+<div class="rv-bar">
+<div class="rv-head"><p class="rv-k">Votre site est prêt ✦</p><h2 class="d" id="rv-title">Voici votre site</h2></div>
+<div class="rv-act">
+<div class="toggle rv-toggle" role="group" aria-label="Taille de l’aperçu"><button type="button" id="rv-desk" aria-pressed="true">Ordinateur</button><button type="button" id="rv-mob" aria-pressed="false">Téléphone</button></div>
+<button type="button" class="btn btn-ghost" id="rv-back">← Modifier</button>
+<button type="button" class="btn btn-main" id="rv-go">Il me plaît : voir les offres →</button>
+</div>
+</div>
+<div class="rv-stage" id="rv-stage"></div>
+<p class="rv-hint">Faites défiler pour découvrir tout le site.</p>
+</div>
 
 <footer style="padding:20px clamp(16px,3vw,40px);display:flex;flex-wrap:wrap;gap:12px 24px;justify-content:space-between;font-size:14px">
 <span>© Nomly — Vertou (44)</span>
@@ -641,6 +672,7 @@ document.getElementById("f-accroche").addEventListener("input",function(e){state
   document.querySelectorAll('.opt[data-group="accroche"]').forEach(function(x){x.setAttribute("aria-pressed",(!state.customAcc&&+x.dataset.key===state.acc)?"true":"false");});render();});
 document.getElementById("prev").addEventListener("click",function(){if(state.step>0){state.step--;showStep();}});
 document.getElementById("next").addEventListener("click",function(){
+  if(state.step===5){openReveal();return;}
   if(state.step<LAST){state.step++;showStep();return;}
   var o=OFFERS[state.offer],h=HOSTING[state.hosting];
   var msg="Bonjour, je souhaite commander mon site créé avec la démo.\nEntreprise : "+nomTxt()+" ("+m().label+") à "+villeTxt()+"\nStyle : "+STYLES[state.style].label+" · Disposition : "+LAYOUTS[state.layout].label+" · Couleurs : "+(state.color?"couleur "+state.color:PALETTES[state.style][state.palette][0])+"\nFonctionnalités : "+state.actions.map(function(a){return ACTIONS[a].label;}).join(", ")+"\nPhrase d’accueil : "+headline()+"\nFormule choisie : "+o.formule+" ("+eur(o.price)+")\nHébergement : "+h.label+(h.price?" ("+h.price+" €/mois)":"");
@@ -648,7 +680,32 @@ document.getElementById("next").addEventListener("click",function(){
   window.location.href="index.html#contact";
 });
 function setView(mob){document.getElementById("browser").classList.toggle("mobile",mob);
-  document.getElementById("v-desk").setAttribute("aria-pressed",mob?"false":"true");document.getElementById("v-mob").setAttribute("aria-pressed",mob?"true":"false");}
+  ["v-desk","rv-desk"].forEach(function(id){document.getElementById(id).setAttribute("aria-pressed",mob?"false":"true");});
+  ["v-mob","rv-mob"].forEach(function(id){document.getElementById(id).setAttribute("aria-pressed",mob?"true":"false");});}
+document.getElementById("rv-desk").addEventListener("click",function(){setView(false);});
+document.getElementById("rv-mob").addEventListener("click",function(){setView(true);});
+var rvReturn=null;
+function openReveal(){
+  var br=document.getElementById("browser"),rv=document.getElementById("reveal");
+  document.getElementById("rv-title").textContent="Voici le site de "+nomTxt();
+  if(window.innerWidth<700)setView(true);
+  document.getElementById("rv-stage").appendChild(br);
+  document.getElementById("viewport").scrollTop=0;
+  rv.hidden=false;document.body.classList.add("rv-open");
+  rvReturn=document.activeElement;document.getElementById("rv-go").focus();
+}
+function closeReveal(toStep){
+  var br=document.getElementById("browser"),rv=document.getElementById("reveal");
+  document.querySelector(".stage").appendChild(br);
+  rv.hidden=true;document.body.classList.remove("rv-open");
+  if(typeof toStep==="number"){state.step=toStep;showStep();}
+  var q=document.getElementById("quiz");q.scrollIntoView({behavior:"smooth"});
+  setTimeout(function(){var n=document.getElementById("next");if(n)n.focus({preventScroll:true});},50);
+}
+document.getElementById("rv-go").addEventListener("click",function(){closeReveal(LAST);});
+document.getElementById("rv-back").addEventListener("click",function(){closeReveal(5);});
+document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!document.getElementById("reveal").hidden)closeReveal(5);});
+document.getElementById("to-reveal").addEventListener("click",openReveal);
 document.getElementById("v-desk").addEventListener("click",function(){setView(false);});
 document.getElementById("v-mob").addEventListener("click",function(){setView(true);});
 
