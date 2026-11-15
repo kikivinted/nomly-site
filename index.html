@@ -517,7 +517,8 @@ a:focus-visible,button:focus-visible,summary:focus-visible{outline:3px solid #2E
 <span style="font-weight: 500">Région nantaise</span>
 </div>
 </div>
-<form action="[URL_DU_SERVICE_DE_FORMULAIRE]" method="POST" style="flex: 1.3 1 520px; min-width: 0; background: #F7F1E3; border: 2px solid #2E1A14; border-radius: 32px; padding: clamp(24px, 3vw, 36px); display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; position: relative">
+<form action="https://api.web3forms.com/submit" method="POST" style="flex: 1.3 1 520px; min-width: 0; background: #F7F1E3; border: 2px solid #2E1A14; border-radius: 32px; padding: clamp(24px, 3vw, 36px); display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; position: relative">
+<input type="hidden" name="access_key" value="0ad4bbaf-2c34-49f8-b075-f9c4b1a5aee3"><input type="hidden" name="subject" value="Nouvelle demande de devis — nomly.fr"><input type="hidden" name="from_name" value="Site Nomly"><input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" style="display:none">
 <div style="display: flex; flex-direction: column; gap: 6px"><label for="v6-nom" style="font-size: 14px; font-weight: 700">Votre nom</label><input id="v6-nom" name="nom" required type="text" autocomplete="name" style="border: 2px solid #2E1A14; background: #FFFBF0; color: #2E1A14; border-radius: 16px; padding: 13px 16px; font-size: 16px; min-height: 50px; box-sizing: border-box"></div>
 <div style="display: flex; flex-direction: column; gap: 6px"><label for="v6-com" style="font-size: 14px; font-weight: 700">Votre entreprise</label><input id="v6-com" name="commerce" type="text" placeholder="Plombier, menuisier, paysagiste…" style="border: 2px solid #2E1A14; background: #FFFBF0; color: #2E1A14; border-radius: 16px; padding: 13px 16px; font-size: 16px; min-height: 50px; box-sizing: border-box"></div>
 <div style="display: flex; flex-direction: column; gap: 6px"><label for="v6-tel" style="font-size: 14px; font-weight: 700">Téléphone</label><input id="v6-tel" name="telephone" required type="tel" autocomplete="tel" style="border: 2px solid #2E1A14; background: #FFFBF0; color: #2E1A14; border-radius: 16px; padding: 13px 16px; font-size: 16px; min-height: 50px; box-sizing: border-box"></div>
@@ -562,14 +563,24 @@ var n=document.getElementById("v6-com"),m=document.getElementById("v6-msg");if(n
 document.getElementById("annee").textContent=new Date().getFullYear();
 (function(){
   var f=document.querySelector("form");
-  if(!f) return;
+  if(!f||!window.fetch) return;
+  var m=document.getElementById("form-msg"),b=f.querySelector("button[type=submit]"),lbl=b.textContent;
   f.addEventListener("submit",function(e){
-    if(f.getAttribute("action").indexOf("[")===0){
-      e.preventDefault();
-      var m=document.getElementById("form-msg");
-      m.textContent="Formulaire pas encore branché : appelez-nous ou écrivez-nous en attendant.";
-      m.style.fontWeight="700";
-    }
+    e.preventDefault();
+    b.disabled=true;b.style.opacity=".6";b.textContent="Envoi…";
+    fetch(f.action,{method:"POST",headers:{"Accept":"application/json"},body:new FormData(f)})
+    .then(function(r){return r.json();})
+    .then(function(d){
+      if(d&&d.success){
+        f.reset();
+        m.innerHTML="<strong>Merci, c’est bien reçu !</strong> Je vous recontacte très vite.";
+        b.textContent="Envoyé ✓";
+      }else{throw 0;}
+    })
+    .catch(function(){
+      m.innerHTML="<strong>Oups, l’envoi n’a pas marché.</strong> Écrivez-moi à <a href=\"mailto:contact@nomly.fr\">contact@nomly.fr</a>.";
+      b.disabled=false;b.style.opacity="";b.textContent=lbl;
+    });
   });
 })();
 </script>
